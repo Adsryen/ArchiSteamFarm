@@ -1,10 +1,12 @@
+// ----------------------------------------------------------------------------------------------
 //     _                _      _  ____   _                           _____
 //    / \    _ __  ___ | |__  (_)/ ___| | |_  ___   __ _  _ __ ___  |  ___|__ _  _ __  _ __ ___
 //   / _ \  | '__|/ __|| '_ \ | |\___ \ | __|/ _ \ / _` || '_ ` _ \ | |_  / _` || '__|| '_ ` _ \
 //  / ___ \ | |  | (__ | | | || | ___) || |_|  __/| (_| || | | | | ||  _|| (_| || |   | | | | | |
 // /_/   \_\|_|   \___||_| |_||_||____/  \__|\___| \__,_||_| |_| |_||_|   \__,_||_|   |_| |_| |_|
+// ----------------------------------------------------------------------------------------------
 // |
-// Copyright 2015-2021 Łukasz "JustArchi" Domeradzki
+// Copyright 2015-2025 Łukasz "JustArchi" Domeradzki
 // Contact: JustArchi@JustArchi.net
 // |
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,25 +22,21 @@
 // limitations under the License.
 
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
-namespace ArchiSteamFarm.IPC.Requests {
-	[SuppressMessage("ReSharper", "ClassCannotBeInstantiated")]
-	public sealed class BotGamesToRedeemInBackgroundRequest {
-		/// <summary>
-		///     A string-string map that maps cd-key to redeem (key) to its name (value).
-		/// </summary>
-		/// <remarks>
-		///     Key in the map must be a valid and unique Steam cd-key.
-		///     Value in the map must be a non-null and non-empty name of the key (e.g. game's name, but can be anything).
-		/// </remarks>
-		[JsonProperty(Required = Required.Always)]
-		[Required]
-		public OrderedDictionary GamesToRedeemInBackground { get; private set; } = new();
+namespace ArchiSteamFarm.IPC.Requests;
 
-		[JsonConstructor]
-		private BotGamesToRedeemInBackgroundRequest() { }
-	}
+[SuppressMessage("ReSharper", "ClassCannotBeInstantiated")]
+public sealed class BotGamesToRedeemInBackgroundRequest {
+	[Description("A string-string map that maps cd-key to redeem (key) to its name (value). Key in the map must be a valid and unique Steam cd-key. Value in the map must be a non-null and non-empty name of the key (e.g. game's name, but can be anything)")]
+	[JsonInclude]
+	[JsonRequired]
+	[Required]
+	public OrderedDictionary GamesToRedeemInBackground { get; private init; } = new();
+
+	[JsonConstructor]
+	private BotGamesToRedeemInBackgroundRequest() { }
 }
